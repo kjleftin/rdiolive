@@ -1,0 +1,45 @@
+.month-table {
+  width: 100%;
+  height: 100%;
+  border: 0px solid black;
+  border-collapse: collapse;
+}
+
+.month-header-row {
+  height: 0px;
+  padding: 0px;
+}
+
+.month-header {
+  width: 14.28%;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 
+  border: 0px;
+  padding: 0px;
+}
+
+.month-row {
+
+}
+
+.month-day {
+  border: 1px solid black;
+  vertical-align: top;
+  text-align: left;
+}
+
+.prev-month-date {
+  color: #888;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.current-month-date {
+  font-family: Helvetica, Arial, sans-serif;
+
+}
+
+.event {
+    color: red;
+    margin: 0px;
+    padding: 0px;
+}
