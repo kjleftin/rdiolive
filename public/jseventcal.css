@@ -3,6 +3,7 @@
   height: 100%;
   border: 0px solid black;
   border-collapse: collapse;
+  font-size: 88%;
 }
 
 .month-header-row {
@@ -15,11 +16,29 @@
   font-family: Helvetica, Arial, sans-serif;
   font-size: 
   border: 0px;
+  border-top: 0px; # To get rid of some bootstrap styling.
   padding: 0px;
 }
 
-.month-row {
+#cal-title {
+  margin-left: 20px;
+}
 
+#top-header {
+  margin-bottom: 20px;
+}
+
+.venue-name {
+  margin-bottom: 5px;
+  font-size: 123%; 
+}
+
+.event-date {
+  color: #666;
+}
+
+.monthrow {
+  height: 60px;
 }
 
 .month-day {
@@ -38,8 +57,12 @@
 
 }
 
+.spinner {
+  margin: 0px auto;
+  display: block;
+}
+
 .event {
-    color: red;
     margin: 0px;
     padding: 0px;
 }

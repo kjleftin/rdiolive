@@ -1,0 +1,121 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="jseventcal.css" type="text/css" />
+    <link rel="stylesheet" href="third-party/bootstrap/css/bootstrap.min.css">
+    <script src="third-party/xdate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="third-party/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="jseventcal.js"></script>
+    <script type="text/javascript" src="bands-in-town-client.js"></script>
+    <script type="text/javascript" src="rdio-client.js"></script>
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+  </head>
+   <body data-rendering="true">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">Rdio&reg; Live</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="mailto:kjleftin@gmail.com">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h3>Find concerts near you based on your Rdio&reg; collection.
+        <div class="g-plusone" data-size="medium" data-annotation="inline" data-width="120"></div>     
+      </h3>
+      <p>
+        Tour information provided by
+        <a href="http://www.bandsintown.com">Bandsintown</a>
+      </p>
+      <!-- Place this tag where you want the +1 button to render. -->
+      
+      <form class="form-horizontal">
+          <div class="control-group">
+            <label class="control-label" for="email">E-mail</label>
+            <div class="controls">
+              <input class="xlarge" id="email" name="email" size="30" type="text" style="height: 28px" />
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="city">City</label>
+            <div class="controls">
+              <input class="xlarge" id="city" name="city" size="30" type="text" style="height: 28px" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <input id="create" type="button" class="btn btn-primary" value="Create calendar" />
+          </div>
+      </form>
+      <div id="caldiv" style="width: 100%; height: 60%"></div>
+    </div>
+    <script type="text/javascript">
+
+      var numRequestsInMotion = 0;
+      var responses = [];
+      function bandsInTownCallback(response) {
+        for (var i = 0; i < response.length; i++) {
+          responses.push(response[i]);
+        }
+        numRequestsInMotion--;
+        if (numRequestsInMotion == 0) {
+          $('#caldiv').empty(); // Remove the spinner from the screen.
+          new JsEventCal(document.getElementById('caldiv'), responses);
+        }
+      }
+
+      $(document).ready(function() {
+        $('#create').click(renderCal);
+      });
+
+      function renderCal() {
+        numRequestsInMotion = 0;
+        responses = [];
+        $('#caldiv').empty(); // Remove the old cal from the screen.
+        $('#caldiv').append($('<img class="spinner" src="spinner.gif"></img>')); 
+        RdioClient.call('findUser', { email: $('#email').val() },
+          function(findUserResponse) {
+            RdioClient.call('getArtistsInCollection', { user: findUserResponse['result']['key'] },
+              function(data) {
+                var artistArray = [];
+                numRequestsInMotion = Math.ceil(data['result'].length / 50);
+                for (var i = 0; i < data['result'].length; i += 50) {
+                  for (var j = 0; j < 50 && j + i < data['result'].length; j++) {
+                    artistArray.push(data['result'][i + j]['name']);
+                  }
+                  BandsInTownClient.search(artistArray, $('#city').val(), '100', bandsInTownCallback);
+                  artistArray = [];
+                }
+              });
+            });
+        }
+    </script>
+    <!-- Place this tag after the last +1 button tag. -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-28016224-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+  </body>
+</html>

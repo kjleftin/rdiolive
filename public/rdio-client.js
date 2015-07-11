@@ -1,17 +1,16 @@
 var RdioClient = (function($) {
 
     return {
-        getArtistsForEmail: function (email) {
-            $.ajax({
-            	url: 'http://api.rdio.com/1',
-                type: 'POST',
-                data: {method: 'findUser',
-                       email: 'kjleftin@gmail.com'},
-            	dataType: 'jsonp',
-            	success: function(data) {
-            		console.log(data);
-            	}
-            });
+        call: function (method, params, callback) {
+          $.ajax({
+            type: 'POST',
+            url: 'rdio/' + method,
+            processData: false,
+            data: JSON.stringify(params),
+            success: function(data) {
+              callback(JSON.parse(data));
+            }
+          });
 	 	}
 	};
 })($);
