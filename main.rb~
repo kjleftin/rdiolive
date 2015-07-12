@@ -4,11 +4,8 @@ require 'rubygems'
 require 'sinatra'
 require './rdio'
 require './rdio_keys'
-require 'json'
 
 before do
-  puts "rdio client id"
-  puts RDIO_CLIENT_ID
   @rdio = Rdio.new(RDIO_CLIENT_ID, RDIO_CLIENT_SECRET)
 end
 
