@@ -6,8 +6,6 @@ require './rdio'
 require 'json'
 
 before do
-  puts "rdio client id"
-  puts RDIO_CLIENT_ID
   @rdio = Rdio.new(ENV['RDIO_CLIENT_ID'], ENV['RDIO_CLIENT_SECRET'])
 end
 
