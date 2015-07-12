@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'sinatra'
 require './rdio'
+require './rdio_keys'
 require 'json'
 
 before do
